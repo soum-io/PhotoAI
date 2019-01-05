@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Blue"
+    tools:context=".choose_classifier">
+
+    <ImageView
+        android:id="@+id/titleImage"
+        android:layout_width="171dp"
+        android:layout_height="102dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/titleImage"
+        android:gravity="center"
+        android:text="@string/step1"
+        android:textColor="@color/Orange"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="397dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"
+        android:fadeScrollbars="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/generalClassifier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/general"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/generalLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/generalLabel"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/flowersClassifier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/flowers"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/flowerLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/flowerLabel"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/dogsClassifier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/dogs"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/dogLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/dogLabel"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Blue"
+    tools:context=".Start">
+
+    <ImageView
+        android:id="@+id/titleImage"
+        android:layout_width="171dp"
+        android:layout_height="102dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/titleImage"
+        android:gravity="center"
+        android:text="@string/step2"
+        android:textColor="@color/Orange"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="165dp"
+        android:fadeScrollbars="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonOpenCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/camera_emoji"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/OpenCameraText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/take_image"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonOpenGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/gallery_emoji"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/OpenGalleryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/choose_image_from_gallery"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonOpenLiveFeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/live_emoji"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/LiveFeedText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/choose_live_feed"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttonshape"
+                        android:padding="10dp"
+                        android:text="@string/back_emoji"
+                        android:textColor="@color/Orange"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/back_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="20dp"
+                        android:text="@string/back"
+                        android:textColor="@color/Orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontFamily="sans-serif" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

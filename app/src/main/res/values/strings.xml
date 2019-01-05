@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">PortDetectorSample</string>
+    <string name="choose_image_from_gallery">From Gallery</string>
+    <string name="take_image">Take Image</string>
+    <string name="camera_emoji">📷</string>
+    <string name="gallery_emoji">🖼</string>
+    <string name="back_emoji">🔙</string>
+    <string name="back">Back</string>
+    <string name="crop">⌜⌟</string>
+    <string name="classify">✅</string>
+    <string name="live_emoji">🎥</string>
+    <string name="choose_live_feed">Live Classification</string>
+    <string name="general">🍌🛋📺</string>
+    <string name="flowers">🌼</string>
+    <string name="dogs">🐕</string>
+    <string name="inception">InceptionV3</string>
+    <string name="empty"></string>
+    <string name="label">Label</string>
+    <string name="confidence">Confidence</string>
+    <string name="stop">⏸</string>
+    <string name="start">▷</string>
+    <string name="left">↶</string>
+    <string name="right">↷</string>
+    <string name="application_title">📷ai</string>
+    <string name="step1">Step 1: Choose Category of Image You Want to Classify!</string>
+    <string name="step2">Step 2: Get Image of Category You Want to Classify!</string>
+    <string name="step3a">Step 3: Press \"✅\" to Classify Image!</string>
+    <string name="step3b">Step 3: Press \"▷\" to Start Live Image Classification!</string>
+    <string name="generalCat">General Image Classification</string>
+    <string name="specificCat">Specific Image Classification</string>
+    <string name="generalLabel">Every Day Objects</string>
+    <string name="flowerLabel">Flower Types</string>
+    <string name="dogLabel">Dog Breeds</string>
+    <string name="one">1. </string>
+    <string name="two">2. </string>
+    <string name="three">3. </string>
+    <string name="lastClassifiedLabel">Last Classified Image:</string>
+    <string name="generalDesc">These image classifiers were trained on an image dataset called ImageNet and can classify from over 1000 categories! MobileNet is a smaller model that is decently accurate and makes
+    extremely fast predictions. Inception is a much bigger model that is more accurate than MobileNet, but the prediction time is much longer as a result.</string>
+    <string name="specificDesc">These image classifiers were trained on non-general image datasets to classify categories in a specific subject, such as dog breeds or flowers types. These models tend to have good accuracy and
+    fast prediction times because they classify much fewer categories than the general classification models.</string>
+
+</resources>

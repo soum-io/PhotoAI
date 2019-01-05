@@ -1,0 +1,5 @@
+NAME: Dog Breeds
+X_DIM: 224
+Y_DIM: 224
+DIM: 3
+quant: N
