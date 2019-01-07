@@ -66,7 +66,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:background="@drawable/border2">
 
                     <LinearLayout
                         android:layout_width="270dp"
@@ -80,7 +81,6 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/border2"
                             android:orientation="vertical"
                             android:gravity="center"
                             android:layout_alignParentBottom="true"
@@ -99,7 +99,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/label"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -109,7 +109,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/confidence"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                             </LinearLayout>
@@ -127,8 +127,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/one"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/Confidence1"
@@ -137,8 +136,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/empty"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
 
@@ -155,8 +153,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/two"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/Confidence2"
@@ -165,8 +162,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/empty"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
 
@@ -183,8 +179,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/three"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/Confidence3"
@@ -193,8 +188,7 @@
                                     android:background="@drawable/text_view_border"
                                     android:text="@string/empty"
                                     android:textColor="@color/Orange"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
 
