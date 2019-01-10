@@ -1,5 +1,5 @@
 # PhotoAI
-Simple to use Android app to showcase the power of local image classification that can be found in the Android Play Store [here](https://www.google.com).
+Simple to use Android app to showcase the power of local image classification that can be found in the Android Play Store [here](https://play.google.com/store/apps/details?id=com.soumio.mikes.photoai).
 
 PhotoAI uses three different trained TensorFlow Lite graphs to classify images:
 1. Every Day Objects (uses the MobileNet CNN)
