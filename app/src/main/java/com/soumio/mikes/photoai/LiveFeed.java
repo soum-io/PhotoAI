@@ -1,4 +1,4 @@
-package com.example.mikes.portdetectorsample;
+package com.soumio.mikes.photoai;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,8 +11,6 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -352,20 +350,20 @@ public class LiveFeed extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case MY_CAMERA_REQUEST_CODE:{
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this.getApplicationContext(), "Please provide the permission", Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(LiveFeed.this, Start.class);
-                    i.putExtra("chosen", chosen);
-                    startActivity(i);
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("loll","granted");
+                } else {
+                    Toast.makeText(getApplicationContext(),"This application needs camera permissions to run. Application now closing.",Toast.LENGTH_LONG);
+                    System.exit(0);
                 }
                 break;
             }
             case MY_STORAGE_REQUEST_CODE:{
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this.getApplicationContext(), "Please provide the permission", Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(LiveFeed.this, Start.class);
-                    i.putExtra("chosen", chosen);
-                    startActivity(i);
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("loll","granted");
+                } else {
+                    Toast.makeText(getApplicationContext(),"This application needs storage permissions to run. Application now closing.",Toast.LENGTH_LONG);
+                    System.exit(0);
                 }
                 break;
             }

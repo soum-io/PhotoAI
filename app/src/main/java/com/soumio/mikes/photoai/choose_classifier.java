@@ -1,10 +1,9 @@
-package com.example.mikes.portdetectorsample;
+package com.soumio.mikes.photoai;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;

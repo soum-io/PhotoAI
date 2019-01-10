@@ -1,4 +1,4 @@
-package com.example.mikes.portdetectorsample;
+package com.soumio.mikes.photoai;
 
 import android.Manifest;
 import android.content.ContentValues;
@@ -22,8 +22,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.soundcloud.android.crop.Crop;
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,6 +77,10 @@ public class Start extends AppCompatActivity {
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_PERMISSION);
+        }
+
+        if (ActivityCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.CAMERA}, REQUEST_PERMISSION);
         }
 
         setContentView(R.layout.activity_start);
@@ -207,10 +213,9 @@ public class Start extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent i = new Intent(this, Start.class);
-                startActivity(i);
+                Log.e("loll","granted");
             } else {
-                Toast.makeText(getApplicationContext(),"This application needs read and write permissions to run. Application now closing.",Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),"This application needs read, write, and camera permissions to run. Application now closing.",Toast.LENGTH_LONG);
                 System.exit(0);
             }
         }

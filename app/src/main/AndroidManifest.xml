@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.mikes.portdetectorsample">
+    package="com.soumio.mikes.photoai">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -21,17 +21,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".choose_classifier" android:screenOrientation="portrait">
+        <activity android:name="com.soumio.mikes.photoai.choose_classifier" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewSelectedImage" android:screenOrientation="portrait"/>
+        <activity android:name="com.soumio.mikes.photoai.ViewSelectedImage" android:screenOrientation="portrait"/>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".Start" android:screenOrientation="portrait"/>
-        <activity android:name=".LiveFeed" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.soumio.mikes.photoai.Start" android:screenOrientation="portrait"/>
+        <activity android:name="com.soumio.mikes.photoai.LiveFeed" ></activity>
     </application>
 
 </manifest>

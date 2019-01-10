@@ -1,4 +1,4 @@
-package com.example.mikes.portdetectorsample;
+package com.soumio.mikes.photoai;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
