@@ -13,13 +13,25 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.io.InputStream;
 
+/*
+ By    : Michael Shea
+ email : mjshea3@illinois.edu
+ phone : 708 - 203 - 8272
+ Description:
+ Controls the  initial activity which prompts the user to choose an image classifier.
+*/
+
 public class choose_classifier extends AppCompatActivity {
 
+    // title image
     private ImageView titleImage;
 
+    // button for each available classifier
     private Button generalClassifier;
     private Button flowersClassifier;
     private Button dogsClassifier;
+
+    // string to send to next activity that describes the chosen classifier
     private String chosen;
 
     @Override
@@ -27,6 +39,7 @@ public class choose_classifier extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_classifier);
 
+        // on click for every day objects classifier
         generalClassifier = (Button)findViewById(R.id.generalClassifier);
         generalClassifier.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +51,8 @@ public class choose_classifier extends AppCompatActivity {
             }
         });
 
+
+        // on click for flower type classifier
         flowersClassifier = (Button)findViewById(R.id.flowersClassifier);
         flowersClassifier.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +64,7 @@ public class choose_classifier extends AppCompatActivity {
             }
         });
 
+        // on click for dog type classifier
         dogsClassifier = (Button)findViewById(R.id.dogsClassifier);
         dogsClassifier.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +76,14 @@ public class choose_classifier extends AppCompatActivity {
             }
         });
 
-
+        // set the title image from assets
         titleImage = (ImageView)findViewById(R.id.titleImage);
         titleImage.setImageBitmap(getBitmapFromAssets("AppImages/title.PNG"));
 
     }
 
+
+    // loads image from assets as bitmap and returns the bitmap
     private Bitmap getBitmapFromAssets(String fileName){
         AssetManager am = getAssets();
         InputStream is = null;

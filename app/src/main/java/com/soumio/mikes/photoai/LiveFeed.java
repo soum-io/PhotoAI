@@ -1,8 +1,6 @@
 package com.soumio.mikes.photoai;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -13,22 +11,16 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import org.tensorflow.lite.Interpreter;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -46,35 +38,59 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+/*
+ By    : Michael Shea
+ email : mjshea3@illinois.edu
+ phone : 708 - 203 - 8272
+ Description:
+ Controls the activity classifies image in real time based of what the camera is seeing
+ */
+
 public class LiveFeed extends AppCompatActivity {
 
-
+    // presets for live preview view
     public static final int IMAGE_SIZE = 1024;
     public static final int IMAGE_ORIENTATION = 90;
-    public static final int MY_CAMERA_REQUEST_CODE = 101;
-    public static final int MY_STORAGE_REQUEST_CODE = 102;
 
+    // states if an image is currently being classified
     private boolean computing = false;
 
+    // selected classifier information received from extras
     private String name;
     private String chosen;
     private int DIM_IMG_SIZE_X;
     private int DIM_IMG_SIZE_Y;
     private int DIM_PIXEL_SIZE;
     private boolean quant;
+
+    // holds path to text files that contains all the labels of the CNN
     private String LABEL_PATH;
+    // holds path to file that folds the tflite graph
     private String MODEL_NAME;
+    // int array to hold image data
     private int[] intValues;
 
+    // presets for rgb conversion
     private static final int RESULTS_TO_SHOW = 3;
     private static final int IMAGE_MEAN = 128;
     private static final float IMAGE_STD = 128.0f;
 
+    // tflite graph
     private Interpreter tflite;
+    // holds all the possible labels
     private List<String> labelList;
+    // holds the selected image data asa bytes
     private ByteBuffer imgData = null;
+    // holds the probabilities of each label for non-quantized graphs
     private float[][] labelProbArray = null;
+    // holds the probabilities of each label for quantized graphs
     private byte[][] labelProbArrayB = null;
+    // array that holds the labels with the highest probabilities
+    private String[] topLables = null;
+    // array that holds the highest probabilities
+    private String[] topConfidence = null;
+
+    // priority queue that will hold the top results from the CNN
     private PriorityQueue<Map.Entry<String, Float>> sortedLabels =
             new PriorityQueue<>(
                     RESULTS_TO_SHOW,
@@ -85,18 +101,15 @@ public class LiveFeed extends AppCompatActivity {
                         }
                     });
 
+    // activity elements
     private SurfaceView cameraPreview;
     private RelativeLayout overlay;
     private Camera camera = null;
     private Button stopButton;
     private Button startButton;
     private Button backButton;
-    private Camera.Parameters camParams;
     private ImageView preview_image;
     private ImageView waiting;
-    private String[] topLables = null;
-    private String[] topConfidence = null;
-
     private TextView label1;
     private TextView label2;
     private TextView label3;
@@ -104,26 +117,37 @@ public class LiveFeed extends AppCompatActivity {
     private TextView Confidence2;
     private TextView Confidence3;
 
+    // holds camera parameters
+    private Camera.Parameters camParams;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // get all selected classifier data from classifiers
         name = (String) getIntent().getStringExtra("name");
         chosen = (String) getIntent().getStringExtra("chosen");
         DIM_IMG_SIZE_X = (int) getIntent().getIntExtra("DIM_IMG_SIZE_X", 0);
         DIM_IMG_SIZE_Y = (int) getIntent().getIntExtra("DIM_IMG_SIZE_Y", 0);
         DIM_PIXEL_SIZE = (int) getIntent().getIntExtra("DIM_PIXEL_SIZE", 0);
         quant = (boolean) getIntent().getBooleanExtra("quant", false);
+
+        // initialize array that holds image data
         intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
+        // use extras to create paths to labels and graph
         LABEL_PATH = chosen + "/labels.txt";
         MODEL_NAME = chosen + "/graph.lite";
 
+        //initilize graph and labels
         try{
             tflite = new Interpreter(loadModelFile());
             labelList = loadLabelList();
         } catch (Exception ex){
             ex.printStackTrace();
         }
+
+        // initialize byte array. The size depends if the input data needs to be quantized or not
         if(quant){
             imgData =
                     ByteBuffer.allocateDirect(
@@ -136,6 +160,7 @@ public class LiveFeed extends AppCompatActivity {
 
         imgData.order(ByteOrder.nativeOrder());
 
+        // initialize probabilities array. The datatypes that array holds depends if the input data needs to be quantized or not
         if(quant){
             labelProbArrayB= new byte[1][labelList.size()];
         } else {
@@ -145,36 +170,40 @@ public class LiveFeed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_feed);
 
+        // labels that hold top three results of CNN
         label1 = (TextView) findViewById(R.id.label1);
         label2 = (TextView) findViewById(R.id.label2);
         label3 = (TextView) findViewById(R.id.label3);
+        // displays the probabilities of top labels
         Confidence1 = (TextView) findViewById(R.id.Confidence1);
         Confidence2 = (TextView) findViewById(R.id.Confidence2);
         Confidence3 = (TextView) findViewById(R.id.Confidence3);
+
+
+        // initialize array to hold top labels
         topLables = new String[RESULTS_TO_SHOW];
+        // initialize array to hold top probabilities
         topConfidence = new String[RESULTS_TO_SHOW];
 
+        // imageView to show user the last classified image
         preview_image = (ImageView) findViewById(R.id.preview_image);
+        // set the last classified image to "waiting to start live feed" image
         preview_image.setImageBitmap(getBitmapFromAssets("AppImages/start_feed.PNG"));
 
+        // displays "start live preview" message to user over the live camera feed view
         waiting = (ImageView) findViewById(R.id.waiting);
 
-        if (ActivityCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(LiveFeed.this, new String[] {android.Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-        }
-
-        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(LiveFeed.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_STORAGE_REQUEST_CODE);
-        }
-
+        // shows the user the live preview of what the camera sees
         cameraPreview = (SurfaceView) findViewById(R.id.camera_preview);
+        // overlay that covers some of the live preview to make it seem square
         overlay = (RelativeLayout) findViewById(R.id.overlay);
 
+        // allows user to pause the live classification
         stopButton = (Button)findViewById(R.id.stop_button);
-
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // set imageView with "start live feed" message over camera preview
                 waiting.setVisibility(View.VISIBLE);
                 if(camera != null){
                     camera.stopPreview();
@@ -182,11 +211,12 @@ public class LiveFeed extends AppCompatActivity {
             }
         });
 
+        // allows user to go back to previous activity
         backButton = (Button)findViewById(R.id.back);
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // make sure the live preview is safely stopped before exiting activity
                 if(camera != null){
                     camera.stopPreview();
                     camera.setPreviewCallback(null);
@@ -198,25 +228,33 @@ public class LiveFeed extends AppCompatActivity {
             }
         });
 
+        // allows user to start the live classification
         startButton = (Button)findViewById(R.id.start_feed);
-
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // start real time view of camera
                 startView();
-
+                // set image telling user to start live feed to invisible
                 waiting.setVisibility(View.INVISIBLE);
-
+                // set callback so this method is called on every single frame
                 camera.setPreviewCallback(new Camera.PreviewCallback() {
                     public void onPreviewFrame(byte[] data, Camera _camera) {
                         try{
+                            // if we are in the middle of classifying another frame, return
                             if(computing){
                                 return;
                             }
+                            // let other threads know we are classifying current frame. While this is
+                            // not thread safe code, it does not matter as it isn't harmful to classify
+                            // multiple frames at once as long as it is not too many to lag the activity.
                             computing = true;
+                            // get current camera parameters
                             Camera.Parameters parameters = _camera.getParameters();
                             int width = parameters.getPreviewSize().width;
                             int height = parameters.getPreviewSize().height;
+                            // get bitmap of current frame's top sqaure portions that is shown in
+                            // the preview
                             ByteArrayOutputStream outstr = new ByteArrayOutputStream();
                             Rect rect = new Rect(0, 0, width, height);
                             YuvImage yuvimage=new YuvImage(data,ImageFormat.NV21,width,height,null);
@@ -226,24 +264,26 @@ public class LiveFeed extends AppCompatActivity {
                                 computing = false;
                                 return;
                             }
+                            // resize the bitmap to fit the required input size into the tflite graph
                             final Bitmap bitmap = getResizedBitmap(bitmap_orig, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y);
+                            // tell the UI thread to set the new bitmap as the last classified image imageView
                             LiveFeed.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     ((ImageView) findViewById(R.id.preview_image)).setImageBitmap(bitmap);
                                 }
                             });
-
-
-
+                            // convert bitmap to byte array
                             convertBitmapToByteBuffer(bitmap);
+                            // classify the iamge
                             if(quant){
                                 tflite.run(imgData, labelProbArrayB);
                             } else {
                                 tflite.run(imgData, labelProbArray);
                             }
-
+                            // display the results
                             printTopKLabels();
+                            // tell other threads we are done computing
                             computing = false;
                         } catch (Exception ex){
                             ex.printStackTrace();
@@ -256,19 +296,26 @@ public class LiveFeed extends AppCompatActivity {
 
 
     public void startView() {
+        // open camera if it hasnt been done already
         if(camera == null){
             camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         }
         try {
+            // idk why this is the case but the original orientation is sideways
             camera.setDisplayOrientation(90);
+            // tell camera what cameraPreview to display onto
             camera.setPreviewDisplay(cameraPreview.getHolder());
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
+        // start live feed
         camera.startPreview();
     }
 
+    // set ui elements dynamically when window has focused. This is required because the overlay element's
+    // dimensions (that makes the camera preview appear square) is depended on the current phone's
+    // screen size
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -287,6 +334,7 @@ public class LiveFeed extends AppCompatActivity {
             overlay.setLayoutParams(overlayParams);
         }
 
+        // start camera
         camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         camParams = camera.getParameters();
 
@@ -316,6 +364,7 @@ public class LiveFeed extends AppCompatActivity {
 
     }
 
+    // get bitmap from byte data that the camera callback function receives on every frame
     private Bitmap processImage(byte[] data) throws IOException {
         // Determine the width/height of the image
         int width = camera.getParameters().getPictureSize().width;
@@ -345,31 +394,7 @@ public class LiveFeed extends AppCompatActivity {
         return scaledBitmap;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case MY_CAMERA_REQUEST_CODE:{
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("loll","granted");
-                } else {
-                    Toast.makeText(getApplicationContext(),"This application needs camera permissions to run. Application now closing.",Toast.LENGTH_LONG);
-                    System.exit(0);
-                }
-                break;
-            }
-            case MY_STORAGE_REQUEST_CODE:{
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("loll","granted");
-                } else {
-                    Toast.makeText(getApplicationContext(),"This application needs storage permissions to run. Application now closing.",Toast.LENGTH_LONG);
-                    System.exit(0);
-                }
-                break;
-            }
-        }
-    }
-
+    // loads tflite grapg from file
     private MappedByteBuffer loadModelFile() throws IOException {
         AssetFileDescriptor fileDescriptor = this.getAssets().openFd(MODEL_NAME);
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
@@ -379,17 +404,20 @@ public class LiveFeed extends AppCompatActivity {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
+    // converts bitmap to byte array which is passed in the tflite graph
     private void convertBitmapToByteBuffer(Bitmap bitmap) {
         if (imgData == null) {
             return;
         }
         imgData.rewind();
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-        // Convert the image to floating point.
+        // loop through all pixels
         int pixel = 0;
         for (int i = 0; i < DIM_IMG_SIZE_X; ++i) {
             for (int j = 0; j < DIM_IMG_SIZE_Y; ++j) {
                 final int val = intValues[pixel++];
+                // get rgb values from intValues where each int holds the rgb values for a pixel.
+                // if quantized, convert each rgb value to a byte, otherwise to a float
                 if(quant){
                     imgData.put((byte) ((val >> 16) & 0xFF));
                     imgData.put((byte) ((val >> 8) & 0xFF));
@@ -403,6 +431,7 @@ public class LiveFeed extends AppCompatActivity {
         }
     }
 
+    // loads the labels from the label txt file in assets into a string array
     private List<String> loadLabelList() throws IOException {
         List<String> labelList = new ArrayList<String>();
         BufferedReader reader =
@@ -415,7 +444,9 @@ public class LiveFeed extends AppCompatActivity {
         return labelList;
     }
 
+    // print the top labels and respective confidences
     private void printTopKLabels() {
+        // add all results to priority queue
         for (int i = 0; i < labelList.size(); ++i) {
             if(quant){
                 sortedLabels.add(
@@ -428,12 +459,16 @@ public class LiveFeed extends AppCompatActivity {
                 sortedLabels.poll();
             }
         }
+
+        // get top results from priority queue
         final int size = sortedLabels.size();
         for (int i = 0; i < size; ++i) {
             Map.Entry<String, Float> label = sortedLabels.poll();
             topLables[i] = label.getKey();
             topConfidence[i] = String.format("%.0f%%",label.getValue()*100);
         }
+
+        // set the corresponding textviews with the results
         label1.setText("1. "+topLables[2]);
         label2.setText("2. "+topLables[1]);
         label3.setText("3. "+topLables[0]);
@@ -442,6 +477,7 @@ public class LiveFeed extends AppCompatActivity {
         Confidence3.setText(topConfidence[0]);
     }
 
+    // resizes bitmap to given dimensions
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -454,6 +490,7 @@ public class LiveFeed extends AppCompatActivity {
         return resizedBitmap;
     }
 
+    // given image filename on user's phone, return the image as a bitmap
     private Bitmap getBitmapFromAssets(String fileName){
         AssetManager am = getAssets();
         InputStream is = null;
